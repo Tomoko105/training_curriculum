@@ -2,7 +2,7 @@ class CalendarsController < ApplicationController
 
   # １週間のカレンダーと予定が表示されるページ
   def index
-    getWeek
+    get_week
     @plan = Plan.new
   end
 
@@ -19,9 +19,8 @@ class CalendarsController < ApplicationController
   end
 
 
+  def get_week
 
-  def getWeek
-    # require "date"
     wdays = ['(日)','(月)','(火)','(水)','(木)','(金)','(土)']
     # day = Date.today.wday
 
@@ -38,13 +37,14 @@ class CalendarsController < ApplicationController
       plan = plans.map do |plan|
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
+
       # = Date.today.wday[wday_num]#Date.today.wdayを利用して添字となる数値を得る
-      #もしもwday_numが7以上であれば、7を引く
+      #もしもwday_numが6以上であれば、6を引く
       wday_num = Date.today.wday + x
       if wday_num > 6 #条件式を記述
         wday_num = wday_num - 6
       end
-      days = { :month => (@todays_date + x).month, :date => (@todays_date + x).day, :youbi => wdays[wday_num], :plans => today_plans}
+      days = { month: (@todays_date + x).month, date: (@todays_date+x).day, youbi: wdays[wday_num], plans: today_plans}
       @week_days.push(days)
     end
   end
